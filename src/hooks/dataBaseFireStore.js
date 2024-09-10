@@ -2,6 +2,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -89,6 +90,17 @@ export const dataBaseFireStore = () => {
     }
   };
 
+  const searchData = async (nanoId) => {
+    try {
+      const docRef = doc(db, "urls", nanoId);
+      const docSnap = await getDoc(docRef);
+      return docSnap;
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
+    }
+  };
+
   return {
     data,
     error,
@@ -97,5 +109,6 @@ export const dataBaseFireStore = () => {
     addData,
     deleteData,
     updateData,
+    searchData,
   };
 };

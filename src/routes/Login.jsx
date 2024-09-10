@@ -8,7 +8,6 @@ import FormInput from "../components/FormInput";
 import { formValidate } from "../utils/formValidate";
 import Title from "../components/Title";
 import Button from "../components/Button";
-import ButtonLoading from "../components/ButtonLoanding";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);

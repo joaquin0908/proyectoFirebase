@@ -2,15 +2,29 @@ import { useEffect, useState } from "react";
 import Title from "../components/Title";
 import { dataBaseFireStore } from "../hooks/dataBaseFireStore";
 import Button from "../components/Button";
-import ButtonLoading from "../components/ButtonLoanding";
-import { nanoid } from "nanoid";
+import { formValidate } from "../utils/formValidate";
+import FormInputHome from "../components/formInputHome";
+import FormError from "../components/FormError";
+import { useForm } from "react-hook-form";
+import { erroresFirebase } from "../utils/erroresFirebase";
+import motog5 from "../assets/motog5.jpg";
+import ButtonCard from "../components/ButtonCard";
+import "../styles/styles.css";
 
 const Home = () => {
   const { data, error, loading, getData, addData, deleteData, updateData } =
     dataBaseFireStore();
-  const [text, setText] = useState("");
-
   const [newOriginId, SetNewOriginId] = useState();
+  const { required, patternUrl } = formValidate();
+  const [copy, setCopy] = useState({});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    resetField,
+    setError,
+    setValue,
+  } = useForm();
 
   useEffect(() => {
     console.log("getData");
@@ -20,16 +34,20 @@ const Home = () => {
   if (loading.getData) return <p>Cargando los datos....</p>;
   if (error) return <p>{error.message}</p>;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (newOriginId) {
-      await updateData(newOriginId, text);
-      SetNewOriginId("");
-      setText("");
-      return;
+  const onSubmit = async ({ url }) => {
+    try {
+      if (newOriginId) {
+        await updateData(newOriginId, url);
+        SetNewOriginId("");
+      } else {
+        await addData(url);
+      }
+      resetField("url");
+    } catch (error) {
+      setError("firebase", {
+        message: erroresFirebase(error.code),
+      });
     }
-    await addData(text);
-    setText("");
   };
 
   const handleClickDelete = async (nanoid) => {
@@ -37,59 +55,87 @@ const Home = () => {
   };
 
   const handleClickUpdate = async (item) => {
-    setText(item.origin);
     SetNewOriginId(item.nanoId);
+    setValue("url", item.origin);
   };
+
+  const handleClickCopy = async (nanoId) => {
+    await navigator.clipboard.writeText(window.location.href + nanoId);
+    setCopy({ [nanoId]: true });
+  };
+
+  const pathUrl = window.location.href;
 
   return (
     <>
-      <Title text="Home" />
-      <div className="flex md:order-2 space-x-2">
-        <form onSubmit={handleSubmit}>
-          <input
-            placeholder="ex: http//bluuweb.org"
-            type="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
-          {newOriginId ? (
+      <Title />
+      <div className="flex flex-col items-center space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex items-center space-x-4"
+        >
+          <div className="flex-grow">
+            <FormInputHome
+              type="text"
+              placeholder="https://www.youtube.com"
+              label="Ingresa tu url"
+              {...register("url", {
+                required,
+                pattern: patternUrl,
+              })}
+              error={errors.url}
+            />
+          </div>
+          <div className="flex-shrink-0">
             <Button
               type="submit"
-              text="EDIT URL"
-              color="yellow"
-              loading={loading.updateData}
+              text={newOriginId ? "EDIT URL" : "ADD URL"}
+              loading={newOriginId ? loading.updateData : loading.addData}
+              color="purple"
             />
-          ) : (
-            <Button
-              type="submit"
-              text="ADD URL"
-              loading={loading.addData}
-              color="blue"
-            />
-          )}
+          </div>
         </form>
       </div>
-      {data.map((item) => (
-        <div key={item.nanoId}>
-          <p>{item.nanoId}</p>
-          <p>{item.origin}</p>
-          <p>{item.uId}</p>
-          <Button
-            type="button"
-            text="Delete"
-            color="red"
-            colorLoading="red"
-            loading={loading[item.nanoId]}
-            onClick={() => handleClickDelete(item.nanoId)}
-          />
-          <Button
-            type="button"
-            text="Edit"
-            color="yellow"
-            onClick={() => handleClickUpdate(item)}
-          />
-        </div>
-      ))}
+      <div className="flex justify-center flex-col items-center place-items-center mt-3">
+        {data.map((item) => (
+          <div
+            key={item.nanoId}
+            className="p-6 bg-white border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 mb-2 flex gap-3 w-6/12 relative"
+          >
+            <img src={motog5} alt="" className="rounded-lg w-28 h-28" />
+            <div className="flex-1">
+              <div className="tracking-[-.075em]">
+                <p className="mb-2 text-2xl font-bold text-gray-900 dark:text-white w-full">
+                  {pathUrl}
+                  {item.nanoId}
+                </p>
+                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 link w-full">
+                  {item.origin}
+                </p>
+              </div>
+            </div>
+            <div className="absolute bottom-2 right-2 flex gap-1 flex-row">
+              <ButtonCard
+                type="button"
+                text="Delete"
+                loading={loading[item.nanoId]}
+                onClick={() => handleClickDelete(item.nanoId)}
+              />
+              <ButtonCard
+                type="button"
+                text="Edit"
+                onClick={() => handleClickUpdate(item)}
+              />
+              <ButtonCard
+                type="button"
+                text={copy[item.nanoId] ? "Copied" : "Copy"}
+                onClick={() => handleClickCopy(item.nanoId)}
+                color="purple"
+              />
+            </div>
+          </div>
+        ))}
+      </div>
     </>
   );
 };
