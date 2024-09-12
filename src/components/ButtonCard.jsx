@@ -1,5 +1,5 @@
 const ButtonCard = ({ text, type, color = "purple", loading, onClick }) => {
-  const isCopyButton = text === "Copy" || text === "Copied";
+  const isCopyButton = text === "Copiar" || text === "Copiado";
 
   return (
     <button

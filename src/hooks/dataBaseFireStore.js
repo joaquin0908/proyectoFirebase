@@ -94,10 +94,17 @@ export const dataBaseFireStore = () => {
     try {
       const docRef = doc(db, "urls", nanoId);
       const docSnap = await getDoc(docRef);
-      return docSnap;
+      if (docSnap.exists()) {
+        console.log("Documento encontrado:", docSnap.data()); // Para depurar
+        return docSnap;
+      } else {
+        console.log("Documento no encontrado");
+        return null; // Importante devolver null si no se encuentra
+      }
     } catch (error) {
-      console.log(error);
+      console.log("Error en searchData:", error);
       setError(error.message);
+      return null; // Manejo de errores, devolver null si falla
     }
   };
 

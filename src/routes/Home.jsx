@@ -31,7 +31,8 @@ const Home = () => {
     getData();
   }, []);
 
-  if (loading.getData) return <p>Cargando los datos....</p>;
+  if (loading.getData)
+    return <p className="flex justify-center">Cargando los datos....</p>;
   if (error) return <p>{error.message}</p>;
 
   const onSubmit = async ({ url }) => {
@@ -60,7 +61,7 @@ const Home = () => {
   };
 
   const handleClickCopy = async (nanoId) => {
-    await navigator.clipboard.writeText(window.location.href + nanoId);
+    await navigator.clipboard.writeText(window.location.href + "ad/" + nanoId);
     setCopy({ [nanoId]: true });
   };
 
@@ -89,7 +90,7 @@ const Home = () => {
           <div className="flex-shrink-0">
             <Button
               type="submit"
-              text={newOriginId ? "EDIT URL" : "ADD URL"}
+              text={newOriginId ? "EDITAR URL" : "AGREGAR URL"}
               loading={newOriginId ? loading.updateData : loading.addData}
               color="purple"
             />
@@ -117,18 +118,18 @@ const Home = () => {
             <div className="absolute bottom-2 right-2 flex gap-1 flex-row">
               <ButtonCard
                 type="button"
-                text="Delete"
+                text="Borrar"
                 loading={loading[item.nanoId]}
                 onClick={() => handleClickDelete(item.nanoId)}
               />
               <ButtonCard
                 type="button"
-                text="Edit"
+                text="Editar"
                 onClick={() => handleClickUpdate(item)}
               />
               <ButtonCard
                 type="button"
-                text={copy[item.nanoId] ? "Copied" : "Copy"}
+                text={copy[item.nanoId] ? "Copiar" : "Copiado"}
                 onClick={() => handleClickCopy(item.nanoId)}
                 color="purple"
               />

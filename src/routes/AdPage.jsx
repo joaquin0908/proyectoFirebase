@@ -9,15 +9,6 @@ const AdPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Agregar el script de Adsterra al montar el componente
-    const script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src =
-      "//pl24358772.cpmrevenuegate.com/26/bf/4f/26bf4fd3ce9b69a5b31a51ac38820295.js";
-    script.async = true;
-    document.body.appendChild(script);
-
-    // Temporizador para redirigir después de que cuente hasta 0
     const timer = setInterval(() => {
       setSeconds((prev) => prev - 1);
     }, 1000);
@@ -33,11 +24,7 @@ const AdPage = () => {
       });
     }
 
-    // Limpiar el script y el temporizador al desmontar el componente
-    return () => {
-      clearInterval(timer);
-      document.body.removeChild(script);
-    };
+    return () => clearInterval(timer);
   }, [seconds, nanoId, searchData, navigate]);
 
   const handleSkip = () => {

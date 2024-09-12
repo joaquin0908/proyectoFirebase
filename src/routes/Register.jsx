@@ -87,7 +87,7 @@ const Register = () => {
           <FormError error={errors.repassword} />
         </FormInput>
         <div className="flex justify-end">
-          <Button text={"Ingresar"} type={"submit"} loading={loading} />
+          <Button text={"Registrate"} type={"submit"} loading={loading} />
         </div>
       </form>
     </>
