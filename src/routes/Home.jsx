@@ -4,7 +4,6 @@ import { dataBaseFireStore } from "../hooks/dataBaseFireStore";
 import Button from "../components/Button";
 import { formValidate } from "../utils/formValidate";
 import FormInputHome from "../components/formInputHome";
-import FormError from "../components/FormError";
 import { useForm } from "react-hook-form";
 import { erroresFirebase } from "../utils/erroresFirebase";
 import motog5 from "../assets/motog5.jpg";
@@ -61,7 +60,7 @@ const Home = () => {
   };
 
   const handleClickCopy = async (nanoId) => {
-    await navigator.clipboard.writeText(window.location.href + "ad/" + nanoId);
+    await navigator.clipboard.writeText(window.location.href + nanoId);
     setCopy({ [nanoId]: true });
   };
 
@@ -129,7 +128,7 @@ const Home = () => {
               />
               <ButtonCard
                 type="button"
-                text={copy[item.nanoId] ? "Copiar" : "Copiado"}
+                text={copy[item.nanoId] ? "Copiado" : "Copiar"}
                 onClick={() => handleClickCopy(item.nanoId)}
                 color="purple"
               />

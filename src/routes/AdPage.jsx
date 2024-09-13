@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { dataBaseFireStore } from "../hooks/dataBaseFireStore";
 
 const AdPage = () => {
+  // Dejar este como AdPage si este componente maneja la visualización del anuncio
   const { nanoId } = useParams();
   const { searchData } = dataBaseFireStore();
   const [seconds, setSeconds] = useState(5); // Temporizador
@@ -46,4 +47,4 @@ const AdPage = () => {
   );
 };
 
-export default AdPage;
+export default AdPage; // Este nombre se mantiene si quieres que siga manejando los anuncios
