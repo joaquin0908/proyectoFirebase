@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserProvider";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,6 +13,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   const { loginuser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -24,6 +25,10 @@ const Login = () => {
     formState: { errors },
     setError,
   } = useForm();
+
+  if (user) {
+    return <Navigate to="/" />;
+  }
 
   const onSubmit = async ({ email, password }) => {
     try {
