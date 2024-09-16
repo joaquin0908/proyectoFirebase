@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { dataBaseFireStore } from "../hooks/dataBaseFireStore";
+import macads from "../assets/macads.jfif";
 
 const AdPage = () => {
-  // Dejar este como AdPage si este componente maneja la visualización del anuncio
   const { nanoId } = useParams();
   const { searchData } = dataBaseFireStore();
   const [seconds, setSeconds] = useState(5); // Temporizador
@@ -39,12 +39,15 @@ const AdPage = () => {
   };
 
   return (
-    <div className="ad-container">
-      <h1>Anuncio</h1>
-      <p>Redirigiendo en {seconds} segundos...</p>
+    <div className="ad-container flex flex-col justify-center items-center h-screen">
+      <h1>Ads</h1>
+      <p className="text-2xl font-bold">
+        Redirigiendo en {seconds} segundos...
+      </p>
+      <img src={macads} alt="Anuncio" className="mb-4" />
       <button onClick={handleSkip}>Saltear Ad</button>
     </div>
   );
 };
 
-export default AdPage; // Este nombre se mantiene si quieres que siga manejando los anuncios
+export default AdPage;

@@ -18,7 +18,7 @@ const App = () => {
   const { user } = useContext(UserContext);
 
   if (user === false) {
-    return <p>Cargando...</p>;
+    return <p className="flex text-lg  justify-center">Cargando...</p>;
   }
 
   return (

@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { dataBaseFireStore } from "../hooks/dataBaseFireStore";
 
-const RedirectLayout = () => {
-  // Renombrado a RedirectLayout
+const AdPage = () => {
   const { nanoId } = useParams();
   const { searchData } = dataBaseFireStore();
   const [seconds, setSeconds] = useState(5); // Temporizador
@@ -60,4 +59,4 @@ const RedirectLayout = () => {
   );
 };
 
-export default RedirectLayout; // Cambiar el nombre exportado también
+export default AdPage;

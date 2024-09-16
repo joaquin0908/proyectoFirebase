@@ -23,12 +23,9 @@ const NavBar = () => {
             URLShort APP
           </span>
         </Link>
-        <div className="flex md:order-2 space-x-2">
+        <div className="flex flex-col md:flex-row md:space-x-2 space-y-2 md:space-y-0 md:order-2">
           {user ? (
             <>
-              <NavLink to="/" className={classButtomPurlpe}>
-                Inicio
-              </NavLink>
               <button onClick={handleClickLogOut} className={classButtomPurlpe}>
                 Cerrar sesion
               </button>
